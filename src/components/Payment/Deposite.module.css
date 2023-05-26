@@ -1,0 +1,44 @@
+
+.card{
+    position: relative;
+    height: 600px;
+    background-color: white; 
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  width: 600px;
+ margin: auto;
+ margin-top: 1%;
+
+}
+
+
+.smallcard{
+    height: 165px;
+    margin-top: 3%;
+    margin-left: 40px;
+    width: 500px;
+    
+}
+.title{
+margin-top: 3%;
+margin-right: auto;
+margin-bottom: 9%;
+}
+.text{
+    font-size: 300%;
+    font-style: normal ;
+    color: green;
+ 
+}
+.img{
+    position: relative;
+    width: 110px;
+    height: 110px;
+}
+.header{
+    font-size: 200%;
+    margin-top: 2%;
+    color: black;
+    margin-left: 3%;
+ 
+}

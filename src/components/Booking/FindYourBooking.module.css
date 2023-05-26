@@ -1,0 +1,29 @@
+  .img{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+   
+  }
+  .actions button:hover,
+  .actions button:active {
+    background-color: blue;
+    border-color: blue;
+   
+  }
+  .form{
+    margin-top: 80px;
+    margin-left: 205px; 
+    position: relative;
+    
+  }
+  .space{
+    margin-top: 20px;
+  }
+  .input{
+    width: 85%;
+    height: 35px;
+    
+  }
+  .contact{
+    overflow-x: hidden;
+  }

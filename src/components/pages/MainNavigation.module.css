@@ -1,0 +1,42 @@
+.navbg{
+    background-color:lightcyan ;
+   
+  }
+  .name{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: xx-large;
+    padding-left: 11%;
+    color: blue;
+  }
+  .name:hover{
+    color: greenyellow;
+  }
+  .menu li:after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 3px;
+    display: block;
+    transition: all 0.3s ease;
+    bottom: 10%;
+  }
+  .menu li:hover::after {
+    width: 100%;
+    height: 3px;
+    background-color:blue;
+  }
+
+  .menu li {
+  display: block;
+  height: 100%;
+  margin-right: 30px;
+  font-size: 15px;
+  font-weight: bold;
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-transform: uppercase;
+
+  transition: all 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}

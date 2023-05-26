@@ -1,0 +1,77 @@
+
+.card2{
+    position: relative;
+    height: 760px;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+   margin-top: 20px;
+}
+.card4{
+    position: relative;
+    height: 750px;
+    background-color: white; 
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+   margin-top: 10px;
+}
+
+.card3{
+    position: relative;
+    height: 750px;  
+    margin-top: 10px;
+  
+}
+
+.actions{
+    width: 130px;
+    padding-top: 1%;
+}
+.title{
+    position: relative;
+    margin-left: 12%;
+    margin-bottom: 2%;
+    margin-top: 3%;
+}
+
+
+.position{
+    margin-left: 11%;
+}
+.smallcard{
+    height: 165px;
+    margin-top: 10px;
+    margin-left: 2px;
+    width: 600px;
+    
+}
+.text{
+    margin-left: 11%;
+    padding-top: 5px;  
+   
+    
+}
+.text1{
+    margin-left: 5px;
+    padding-top: 15px;  
+    
+}
+.text2{
+    padding-top: 3px;  
+    background-color: lightcyan;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    width: 1030px;
+    height: 70px;
+}
+.img{
+    position: relative;
+    width: 50px;
+    height: 50px;
+}
+.logo{
+    font-size: 80%;
+    margin-top: 14%;
+    color: black;
+    margin-left: 30%;
+}
