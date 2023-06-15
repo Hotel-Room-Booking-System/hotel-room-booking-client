@@ -8,6 +8,7 @@ const Payment = () => {
   const cardbody1 = `col-md-6 col-sm-12 mx-3 card ${classes.card2}`;
   const cardbody3 = `col-md-5 col-sm-12 mx-3 ${classes.card3}`;
 
+  
   return (
     <section>
          

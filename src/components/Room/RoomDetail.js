@@ -3,16 +3,50 @@ import view2 from "../images/dview2.jpg";
 import view4 from "../images/dview4.jpg";
 import classes from "./RoomDetail.module.css"
 import ARoom from "./ARoom";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllRoom, findRoomByselected, getAllRoom, getFilteredRoom, selectRoomBYType, setSelected } from "./roomSlice";
+import { useEffect, useState } from "react";
 import SelectedRoom from "./SelectedRoom";
+import SearchBar from "../pages/SearchBar";
 
 
 const RoomDetail = () => {
 
+  const { roomTypeId } = useParams()
+  console.log("In the room detail: "+roomTypeId)
+  const rooms = useSelector((state)=>selectRoomBYType(state,Number(roomTypeId)))
+  console.log("In the room detail with roomtype: "+rooms)
+
+  const filteredRooms = useSelector(getFilteredRoom)
+  console.log("In room detail with filtered rooms: "+filteredRooms)
+
+
+
+  // const allrooms = useSelector(getAllRoom)
+  // console.log("All Rooms:"+allrooms)
+
+  // allrooms.map(room => {
+  //   console.log("In the room Detail"+room.selected);
+  // })
+  // const selectedRooms = useSelector(findRoomByselected)
+  // console.log("In the room detail with selectedroom:"+ selectedRooms)
+
+ 
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(fetchAllRoom())
+  },[/*dispatch*/])
+
+ 
+
 const modal = `card ${classes.modal}`
 const card = `card mb-3 ${classes.card3}`;
-//  const cardBody = `card-body ${classes.cardBody}`;
- const submit = `form-control ${classes.submit}`
+const submit = `form-control ${classes.submit}`
 
+
+      
+  
   return (
     <>
     <section>
@@ -54,9 +88,11 @@ const card = `card mb-3 ${classes.card3}`;
         </div>
       </div>
     </section>
-    <div className={classes.modal}>
+    <SearchBar/>
+    {/* <div className={classes.modal}>
     <h4 className="ms-2">Search rooms and see the prices</h4>
-    <div class={card}>
+    
+     <div class={card}>
     <form>
   <div class="row g-0 p-5">
   <div className="form-group col-md-3 col-sm-6 px-2">
@@ -77,14 +113,33 @@ const card = `card mb-3 ${classes.card3}`;
   </div>
   </form>
 </div>
-    </div>
+    </div> */}
     <section>
     <div className="row mt-3">
         <div className="col-sm-12 col-md-7">
-        <ARoom/>
+        {
+          filteredRooms.map(
+            (room) => (
+                <ARoom
+                    id = {room.id}
+                    description = {room.description}
+                    image1 = {room.image1}
+                    image2 = {room.image2}
+                    image3 = {room.image3}
+                    roomTypeId = {room.roomType.id}
+                    roomTypeName = {room.roomType.name}
+                    roomTypePrice = {room.roomType.price}
+                    roomTypeDescription = {room.roomType.description}
+                    roomTypeFacilities = {room.roomType.facilities}
+                    roomSelected = {room.selected}
+                    
+                />
+            ))
+  }
         </div>
         <div className="col-sm-12 col-md-4 mt-4">
         <SelectedRoom/>
+         
         </div>
     </div>
     </section>

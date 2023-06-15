@@ -1,17 +1,85 @@
-import { Link } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import classes from "./BookingForm.module.css";
 
-import SmallImg from "../pages/SmallImg";
+
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewBooking, booking } from "./bookingSlice";
+import { findRoomByselected } from "../Room/roomSlice";
+import SelectedRoomItemForBooking from "../Room/SelectedRoomItemForBooking";
 
 const BookingForm = () => {
   const button = `mt-5 mb-3 btn btn-primary ${classes.button}`;
+  const selectedRooms = useSelector(findRoomByselected);
+  const [guestName, setGuestName] = useState('')
+  const [nrc, setNRC] = useState('')
+  const [phone, setPhone] = useState('')
+  const [countryOfOrigin, setCountryOfOrigin] = useState('')
+  const [totalAdults, setTotalAdults] = useState('')
+  const [totalChildren, setTotalChildren] = useState('')
+  const [specialRequest, setSpecialRequest] = useState('')
+  const [addRequestStatus, setAddRequestStatus] = useState("idle");
+
+  const onGuestNameChange = (e) => setGuestName(e.target.value);
+  const onNrcChange = (e) => setNRC(e.target.value);
+  const onPhoneChange = (e) => setPhone(e.target.value);
+  const onCountryOfOrigin = (e) => setCountryOfOrigin(e.target.value);
+  const onTotalAdults = (e) => setTotalAdults(e.target.value);
+  const onTotalChildren = (e) => setTotalChildren(e.target.value);
+  const onSpecialRequest = (e) => setSpecialRequest(e.target.value);
+
+  const canSave = [guestName,nrc,phone,countryOfOrigin,totalAdults,totalChildren,specialRequest] &&
+  addRequestStatus === "idle";
   
+  console.log("In the booking form Cansave:"+canSave)
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+      if(canSave){
+
+        try {
+
+          setAddRequestStatus('pending')
+
+       dispatch(
+        addNewBooking({
+          booking: {
+                guestName,
+                nrc,
+                phone,
+                countryOfOrigin,
+                totalAdults,
+                totalChildren,
+                specialRequest
+          }
+        })
+       ).unwrap()    
+      } catch (error) {
+        console.log(error)  
+       }finally{
+        setAddRequestStatus('idle')
+       }
+      }
+       setGuestName('')
+       setNRC('')
+       setPhone('')
+       setCountryOfOrigin('')
+       setTotalAdults('')
+       setTotalChildren('')
+       setSpecialRequest('')
+     
+      navigate(`/payment`)
+    }
+
   return (
     <section>
       <div className="container">
         <div className=" row mt-3">
           <div className="col-7">
-            <form>
+            <form onSubmit={onSubmit}>
               <div className="form-group">
                 <label className="d-flex flex-row justify-content-between">
                   <div className="mb-2">
@@ -19,7 +87,7 @@ const BookingForm = () => {
                     <sup className="ml-1 text-danger">*</sup>
                   </div>
                 </label>
-                <input type="text" required className="form-control"></input>
+                <input type="text" required className="form-control" value={guestName} onChange={onGuestNameChange}></input>
               </div>
               <div className="form-group mt-3">
                 <label className="d-flex flex-row justify-content-between">
@@ -34,6 +102,8 @@ const BookingForm = () => {
                   pattern="^09[0-9]{6,10}$"
                   placeholder="09_ _ _ _ _ _ _ "
                   className="form-control"
+                  value={phone}
+                  onChange={onPhoneChange}
                 ></input>
                 <small class="form-text text-muted">
                   Myanmar mobile number is required. Example : 09123456789
@@ -41,12 +111,10 @@ const BookingForm = () => {
               </div>
               <div className="form-group mt-3">
                 <label className="d-flex flex-row justify-content-between">
-                  <div className="mb-2">Email</div>
-                  <div>
-                    <small className="ml-auto text-muted">optional</small>
-                  </div>
+                  <div className="mb-2">NRC</div>
+                  
                 </label>
-                <input type="email" className="form-control"></input>
+                <input type="text" className="form-control" value={nrc} onChange={onNrcChange}></input>
               </div>
               <div className="form-group mt-3">
                 <label className="d-flex flex-row justify-content-between">
@@ -55,7 +123,7 @@ const BookingForm = () => {
                     <sup className="ml-1 text-danger">*</sup>
                   </div>
                 </label>
-                <select required className="form-select">
+                <select required className="form-select" value={countryOfOrigin} onChange={onCountryOfOrigin}>
                   <option value="Afghanistan">Afghanistan</option>s
                   <option value="Albania">Albania</option>
                   <option value="Algeria">Algeria</option>
@@ -363,7 +431,7 @@ const BookingForm = () => {
                     <label class="d-flex flex-row justify-content-between">
                       <div className="mb-2">Total Adults</div>
                     </label>
-                    <input name="" type="text" class="form-control"></input>
+                    <input name="" type="text" class="form-control" value={totalAdults} onChange={onTotalAdults}></input>
                   </div>
                 </div>
                 <div className="col">
@@ -371,7 +439,7 @@ const BookingForm = () => {
                     <label class="d-flex flex-row justify-content-between">
                       <div className="mb-2">Total Children</div>
                     </label>
-                    <input name="" type="text" class="form-control"></input>
+                    <input name="" type="text" class="form-control" value={totalChildren} onChange={onTotalChildren}></input>
                   </div>
                 </div>
               </div>
@@ -386,6 +454,8 @@ const BookingForm = () => {
                   type="text"
                   className="form-control"
                   placeholder="Eg : low-floor room"
+                  value={specialRequest}
+                  onChange={onSpecialRequest}
                 ></input>
               </div>
               <div class=" mt-4">
@@ -397,11 +467,11 @@ const BookingForm = () => {
                 </label>
               </div>
               <div className="row mt-3">
-                <Link to="/payment">
+               
                   <button type="submit" className={button}>
                     Submit
                   </button>
-                  </Link>
+               
               </div>
             </form>
           </div>
@@ -454,7 +524,14 @@ const BookingForm = () => {
                   <div class="mb-3 font-weight-bold text-muted">
                     Room Selections
                   </div>
-                <SmallImg/>
+                  {selectedRooms.map((room) => (
+                <SelectedRoomItemForBooking
+                    id = {room.id}
+    image1 = {room.image1}
+    roomType = {room.roomType.name}
+    price = {room.roomType.price}
+                />
+                ))}
                 </div>
               </div>
             </div>
