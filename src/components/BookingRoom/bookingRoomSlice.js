@@ -13,8 +13,52 @@ export const fetchAllBookingRoom =  createAsyncThunk('bookingRoom/fetchBookingRo
 })
 
 export const addBookingRoom = createAsyncThunk('bookingRoom/addBookingRoom', async(data) => {
-    const response = await axios.post(`${CREATE_BOOKING_ROOM}${data.roomId}/${data.bookingId}`, data.bookingRoom)
-    return response.data
+    console.log("Booking room slice:"+data)
+    console.log("add bookroomslice:"+data.selectedRooms.length+".....bk room"+data.bookingRoom)
+    let content;
+    let roomId;
+   
+    const bkRoom = data.bookingRoom
+    const selectedRooms = data.selectedRooms
+    content = selectedRooms.map((room) =>
+       roomId = room.id,
+       
+      )
+      console.log("Content: "+content)
+
+      console.log("Length:"+selectedRooms.length)
+    
+    //   for(i;i<selectedRooms.length;i++){
+
+    //     response = await axios.post(`${CREATE_BOOKING_ROOM}${data.bookingId}/${selectedRooms[i].id}`,bkRoom)
+    //     console.log("Response;"+ i+"times"+response.data)
+    //     return response.data
+    //   }
+
+    const responses = [];
+
+  for (let i = 0; i < selectedRooms.length; i++) {
+    try {
+      const response = await axios.post(
+        `${CREATE_BOOKING_ROOM}${data.bookingId}/${selectedRooms[i].id}`,
+        bkRoom
+      );
+      console.log(`Response ${i + 1}:`, response.data);
+      responses.push(response.data);
+    } catch (error) {
+      console.error(`Error ${i + 1}:`, error);
+      // Handle the error if needed
+    }
+  }
+
+  return responses;
+     
+      console.log("Room Id:"+roomId)
+    // const bookingRoom = {bkRoom , selectedRooms}
+    // console.log("BookingRoom in slice:"+bookingRoom)
+    
+    
+   
 })
 
 
@@ -35,7 +79,7 @@ export const bookingRoomSlice = createSlice({
     name: "bookingRoom",
     initialState,
     reducers:{
-        
+       
     },
     extraReducers(builder){
         builder
@@ -64,6 +108,7 @@ export const getAllBookingRooms = (state) => state.bookingRooms.bookingRooms
 export const getBookingRoomStatus = (state) => state.bookingRooms.status
 export const getBookingRoomError = (state) => state.bookingRooms.error
 export const selectBookingRoomById = (state,bkRoomId) => state.bookingRooms.bookingRooms.find(bkroom => bkroom.id === bkRoomId)
+export const selectBookingRoomByBkId = (state,bId) => state.bookingRooms.bookingRooms.filter(bkroom => bkroom.bookingId === bId)
 
 export default bookingRoomSlice.reducer
   

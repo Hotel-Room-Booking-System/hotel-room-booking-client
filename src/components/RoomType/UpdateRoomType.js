@@ -57,7 +57,7 @@ const UpdateRoomType = () => {
               setDescription("");
               setPrice("");
               setFacilities("");
-              navigate("/roomtypeTable");
+              navigate("/admin/roomtypeTable");
         }
     }
 

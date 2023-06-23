@@ -4,13 +4,18 @@ import classes from "./BookingForm.module.css";
 
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewBooking, booking } from "./bookingSlice";
-import { findRoomByselected } from "../Room/roomSlice";
+import { addBooking, addNewBooking, booking, deleteBooking, getAllBookings } from "./bookingSlice";
+import { findRoomByselected, getFilteredDate } from "../Room/roomSlice";
 import SelectedRoomItemForBooking from "../Room/SelectedRoomItemForBooking";
+import { addBookingRoom } from "../BookingRoom/bookingRoomSlice";
+import { getEmail, getToken, getUser } from "../../features/auth/authSlice";
+import BookingModal from "../ui/BookingModal";
 
 const BookingForm = () => {
   const button = `mt-5 mb-3 btn btn-primary ${classes.button}`;
   const selectedRooms = useSelector(findRoomByselected);
+  const filteredDate = useSelector(getFilteredDate);
+
   const [guestName, setGuestName] = useState('')
   const [nrc, setNRC] = useState('')
   const [phone, setPhone] = useState('')
@@ -30,11 +35,34 @@ const BookingForm = () => {
 
   const canSave = [guestName,nrc,phone,countryOfOrigin,totalAdults,totalChildren,specialRequest] &&
   addRequestStatus === "idle";
+
+  const user = useSelector(getEmail)
+  const username = String(user)
+  
   
   console.log("In the booking form Cansave:"+canSave)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  //for user
+  const token = useSelector(getToken)
+
+  //for room
+  const count = Object.keys(selectedRooms).length
+  console.log("No of room:"+count)
+
+
+  //For Night
+  const checkIn = new Date(filteredDate.checkIn)
+  const checkOut = new Date(filteredDate.checkOut)
+  const seconds =Math.abs(checkOut - checkIn) 
+  const oneDay = 24 * 60 * 60 * 1000
+  const nights = Math.floor(seconds/oneDay)
+  console.log("Nights: "+nights)
+
+ 
+  const numOfRoom = count;
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -50,13 +78,26 @@ const BookingForm = () => {
                 guestName,
                 nrc,
                 phone,
+                username,
                 countryOfOrigin,
                 totalAdults,
                 totalChildren,
-                specialRequest
-          }
+                specialRequest,
+                checkIn,
+                checkOut,
+                numOfRoom
+          },token
         })
-       ).unwrap()    
+       ).unwrap()   
+       dispatch(addBooking({
+       
+        guestName,
+        nrc,
+        phone,
+        countryOfOrigin,
+        totalAdults,
+        totalChildren,
+        specialRequest}))
       } catch (error) {
         console.log(error)  
        }finally{
@@ -65,14 +106,16 @@ const BookingForm = () => {
       }
        setGuestName('')
        setNRC('')
-       setPhone('')
-       setCountryOfOrigin('')
-       setTotalAdults('')
-       setTotalChildren('')
-       setSpecialRequest('')
-     
-      navigate(`/payment`)
+      setPhone('')
+      setCountryOfOrigin('')
+      setTotalAdults('')
+      setTotalAdults('')
+      setSpecialRequest('')
+      navigate('/payment')
+
     }
+
+   
 
   return (
     <section>
@@ -430,7 +473,9 @@ const BookingForm = () => {
                   <div className="form-group mt-3">
                     <label class="d-flex flex-row justify-content-between">
                       <div className="mb-2">Total Adults</div>
+                     
                     </label>
+                    <small className="text-warning">20000 Kyats per additional adult per night</small>
                     <input name="" type="text" class="form-control" value={totalAdults} onChange={onTotalAdults}></input>
                   </div>
                 </div>
@@ -439,6 +484,7 @@ const BookingForm = () => {
                     <label class="d-flex flex-row justify-content-between">
                       <div className="mb-2">Total Children</div>
                     </label>
+                    <small className="text-warning">Under 5 years stays free</small>
                     <input name="" type="text" class="form-control" value={totalChildren} onChange={onTotalChildren}></input>
                   </div>
                 </div>
@@ -473,6 +519,7 @@ const BookingForm = () => {
                   </button>
                
               </div>
+            
             </form>
           </div>
           <div class="col-5">
@@ -487,7 +534,7 @@ const BookingForm = () => {
                       </div>
                       <div class="col-7">
                         <label>
-                          <b>May 29, Monday</b>
+                          <b>{filteredDate.checkIn}</b>
                         </label>
                       </div>
                     </div>
@@ -497,26 +544,21 @@ const BookingForm = () => {
                       </div>
                       <div class="col-7">
                         <label>
-                          <b>May 31, Wednesday</b>
+                          <b>{filteredDate.checkOut}</b>
                         </label>
                       </div>
                     </div>
                     <div class="mt-2">
                       <label>
-                        <b>1 Room</b>
+                        <b>{count} Room</b>
                       </label>
                       <span>
                         <b>, </b>
                       </span>
                       <label>
-                        <b>2 Nights</b>
+                        <b>{nights} Nights</b>
                       </label>
-                      <span>
-                        <b>, </b>
-                      </span>
-                      <label>
-                        <b>Local Guest(s)</b>
-                      </label>
+                     
                     </div>
                   </div>
                 </div>

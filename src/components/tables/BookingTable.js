@@ -1,6 +1,5 @@
 import React from 'react'
 import $ from "jquery"
-import AdminBookingList from '../Booking/AdminBookingList'
 
 const BookingTable = () => {
 
@@ -34,7 +33,7 @@ const BookingTable = () => {
           </tr>
         </thead>
         <tbody>
-        <AdminBookingList/>
+     
            
         </tbody>
       </table>

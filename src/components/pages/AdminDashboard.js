@@ -5,13 +5,19 @@ import AdminCards from "./AdminCards";
 import AddRoom from "../Room/AddRoom";
 import Facilities from "../RoomType/Facilities";
 import RoomTypeTable from "../tables/RoomTypeTable";
+import { getToken, logout } from "../../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import classes from "./AdminDashboard.module.css"
 
 const AdminDashboard = () => {
 
+    const nav = `navbar-nav sidebar sidebar-light accordion ${classes.navbg}`
+    
     const [isCardOpen,setCardOpen] = useState(true)
     const [isRoomOpen,setRoomOpen] = useState(false)
     const [isRoomTypeOpen,setRoomTypeOpen] = useState(false)
     const [isRoomTypeTable,setRoomTypeTable] = useState(false)
+
 
     function showCard(){
         setCardOpen(true)
@@ -35,12 +41,39 @@ const AdminDashboard = () => {
     }
     console.log("Set Room form:"+isRoomOpen)
 
+    const token = useSelector(getToken);
+
+  const dispatch = useDispatch();
+  let adminAccountItem = "";
+
+  if (token) {
+    adminAccountItem = (
+      <Link
+        to="/admin"
+        className="text-light"
+        onClick={() => {
+          dispatch(logout());
+        }}
+      >
+        Log out
+      </Link>
+    );
+  } else {
+    adminAccountItem = (
+      <Link to="/login" className="text-light">
+        Log in
+      </Link>
+    );
+  }
+
+
+
     
   return (
     
     <div id="wrapper">
       <ul
-        className="navbar-nav bg-info sidebar sidebar-dark accordion"
+        className={nav}
         id="accordionSidebar"
       >
         <Link
@@ -58,7 +91,7 @@ const AdminDashboard = () => {
         <hr className="sidebar-divider bg-light my-0" />
 
         <li className="nav-item active">
-          <Link className="nav-link" to="/" onClick={showCard}>
+          <Link className="nav-link" to="/admin" onClick={showCard}>
             <i className="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </Link>
@@ -88,9 +121,9 @@ const AdminDashboard = () => {
           >
             <div className="bg-white py-2 collapse-inner rounded">
               <h6 className="collapse-header">Custom Components:</h6>
-              <Link to="/addroom" className="collapse-item">Create Room</Link>
+              <Link to="/admin/addroom" className="collapse-item">Create Room</Link>
               
-              <Link className="collapse-item" to="/createroomType">
+              <Link className="collapse-item" to="/admin/createroomType">
                 Create Room Type
               </Link>
             </div>
@@ -116,28 +149,26 @@ const AdminDashboard = () => {
           >
             <div className="bg-white py-2 collapse-inner rounded">
               <h6 className="collapse-header">Custom Components:</h6>
-              <a className="collapse-item" href="buttons.html">
+              <Link className="collapse-item" to="/admin/userlist-table">
                 User Table
-              </a>
+              </Link>
               <a className="collapse-item" href="buttons.html">
                 Role Table
               </a>
               <a className="collapse-item" href="buttons.html">
                 UserRole Table
               </a>
-              <Link className="collapse-item" to='/bookingTable'>
+              <Link className="collapse-item" to='/admin/bookingTable'>
                 Booking Table
               </Link>
-              <Link className="collapse-item" to="/roomTable">
+              <Link className="collapse-item" to="/admin/roomTable">
                 Room Table
               </Link>
-              <Link className="collapse-item" to="/roomTypeTable">
+              <Link className="collapse-item" to="/admin/roomTypeTable">
                 RoomType Table
               </Link>
-              <Link className="collapse-item" to="/bookingRoomTable">
-                Booking-Room Table
-              </Link>
-              <Link className="collapse-item" to="/paymentTable">
+             
+              <Link className="collapse-item" to="/admin/paymentTable">
                 Payment Table
               </Link>
             </div>
@@ -151,8 +182,16 @@ const AdminDashboard = () => {
           </a>
         </li>
 
+
         <hr className="sidebar-divider bg-light d-none d-md-block" />
 
+        <li className="nav-item">
+          <a className="nav-link" href="charts.html">
+            <i className="fas fa-fw fa-chart-area"></i>
+            <span>{adminAccountItem}</span>
+          </a>
+        </li>
+        <hr className="sidebar-divider bg-light d-none d-md-block" />
         <div className="text-center d-none d-md-inline">
           <button className="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
@@ -425,21 +464,21 @@ const AdminDashboard = () => {
                     Activity Log
                   </a>
                   <div className="dropdown-divider"></div>
-                  <a
+                  <Link
                     className="dropdown-item"
-                    href="#"
+                    to="/"
                     data-toggle="modal"
                     data-target="#logoutModal"
                   >
                     <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
-                  </a>
+                  </Link>
                 </div>
               </li>
             </ul>
           </nav>
 
-          <div className="container-fluid">
+          <div className="container-fluid bg-white">
             <div className="d-sm-flex align-items-center justify-content-between mb-4">
               <h1 className="h5 mb-0 text-gray-800">Dashboard</h1>
               <a
@@ -452,7 +491,7 @@ const AdminDashboard = () => {
             </div>
 
             <div className="row">
-              {/* {isCardOpen && <AdminCards/>} */}
+              {isCardOpen && <AdminCards/>}
             </div>
           </div>
          <Outlet/>

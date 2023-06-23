@@ -3,6 +3,7 @@ import ConfirmModal from "../ui/ConfirmModal";
 import classes from "./PaymentUser.module.css";
 import { Link } from "react-router-dom";
 const UserPayment = (props) => {
+  const card = `card ${classes.first}`
   const [isDeleteModal, setDeleteModal] = useState(false);
   const [isPaymentModal, setPaymentModal] = useState(true);
 
@@ -20,85 +21,71 @@ const UserPayment = (props) => {
   }
   function PaymentInfo() {
     return (
-      <div className="container">
-        <div className={classes.plan}>
-          <div class={classes.inner}>
-            <p class={classes.title}>{props.holderName}</p>
-            <h6 class={classes.info}>{props.cardType}</h6>
-            <ul class={classes.features}>
-              <li>
-                <span class={classes.icon}>
-                  <svg
-                    height="24"
-                    width="24"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M0 0h24v24H0z" fill="none"></path>
-                    <path
-                      fill="currentColor"
-                      d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                    ></path>
-                  </svg>
-                </span>
-                <span>
-                  <strong>Total </strong>
-                  {props.total} MMK
-                </span>
-              </li>
-              <li>
-                <span class={classes.icon}>
-                  <svg
-                    height="24"
-                    width="24"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M0 0h24v24H0z" fill="none"></path>
-                    <path
-                      fill="currentColor"
-                      d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                    ></path>
-                  </svg>
-                </span>
-                <strong>CVC </strong>
-                <span>{props.cvc}</span>
-              </li>
-              <li>
-                <span class={classes.icon}>
-                  <svg
-                    height="24"
-                    width="24"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M0 0h24v24H0z" fill="none"></path>
-                    <path
-                      fill="currentColor"
-                      d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                    ></path>
-                  </svg>
-                </span>
-                <span>
-                  <strong>Card Number </strong>
-                  {props.cardNo}
-                </span>
-              </li>
+      <div class={card}>
+      <div class="card-body mx-4">
+        <div class="container">
+          <p class="mx-2 text-center">Thank for your purchase</p>
+          <div class="row">
+            <ul class="list-unstyled">
+              <li class="text-dark">{props.holderName}</li>
+              <li class="text-muted mt-1"><span class="text-dark">{props.cardType}</span></li>
+              <li class="text-dark mt-1">{props.booking.createdAt}</li>
             </ul>
-            <div class={classes.action}>
+            <hr/>
+            <div class="col-xl-10">
+              <p>Card Number</p>
+            </div>
+            <div class="col-xl-2">
+              <p class="float-end">{props.cardNo}
+              </p>
+            </div>
+            <hr/>
+          </div>
+          <div class="row">
+            <div class="col-xl-10">
+              <p>CVC</p>
+            </div>
+            <div class="col-xl-2">
+              <p class="float-end">{props.cvc}
+              </p>
+            </div>
+            <hr/>
+          </div>
+          <div class="row">
+            <div class="col-xl-10">
+              <p>Total</p>
+            </div>
+            <div class="col-xl-2">
+              <p class="float-end">{props.total}MMK
+              </p>
+            </div>
+            {/* <hr style={{border: "2px solid black"}}/> */}
+          </div>
+          {/* <div class="row text-black">
+    
+            <div class="col-xl-12">
+              <p class="float-end fw-bold">Total: $10.00
+              </p>
+            </div>
+            <hr style={{border: "2px solid black"}}/>
+          </div> */}
+          <div class="text-center mt-2">
+         
+          <div class={classes.action}>
               <Link class={classes.button} onClick={deleteHandler}>
                 Delete
               </Link>
-              {isDeleteModal && (
+              {isDeleteModal && 
                 <ConfirmModal
                   onCancel={closeHandler}
                   onConfirm={confirmHandler}
-                />
-              )}
-            </div>
+                />}
+           
+          </div>
           </div>
         </div>
       </div>
+    </div>
     );
   }
   return <>{isPaymentModal && <PaymentInfo />}</>;

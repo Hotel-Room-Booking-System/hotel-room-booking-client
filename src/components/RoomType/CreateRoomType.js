@@ -53,7 +53,7 @@ const CreateRoomType = () => {
       setDescription("");
       setPrice("");
       setFacilities("");
-      navigate("/roomtypeTable");
+      navigate("/admin/roomtypeTable");
     }
 
     console.log("Cansave: " + canSave);

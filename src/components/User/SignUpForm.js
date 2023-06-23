@@ -1,46 +1,121 @@
 import React, { useState } from 'react'
 
-
+import { useDispatch } from 'react-redux';
+import { register } from '../User/userSlice'
+import { Link, useNavigate } from 'react-router-dom';
+import  classes from "./SignUpForm.module.css"
 
 const SignUpForm = (props) => {
 
-    const timeToShowSignUp = 100;
-    
+  const card = `card ${classes.card}`
 
-    setTimeout(function () {
-       let signUpForm = document.getElementsByClassName("cont_form_sign_up")[0]
-       console.log("signUpForm"+signUpForm)
-       signUpForm.style.opacity = 1
-      }, timeToShowSignUp);
-  
+    const [firstname,setFirstname] = useState ('')
+    const [lastname,setLastname] = useState ('')
+    const [username,setUsername] = useState ('')
+    const [phone,setPhone] = useState ('')
+    const [password,setPassword] = useState ('')
+    const [confirmPassword,setConfirmPassword] = useState ('')
+    const [registerRequestStatus,setRegisterRequestStatus] = useState('idle')
+
+    const onFirstnameChange = (e) => setFirstname(e.target.value)
+    const onLastnameChange = (e) => setLastname(e.target.value)
+    const onUsernameChange = (e) => setUsername(e.target.value)
+    const onPhoneChange = (e) => setPhone(e.target.value)
+    const onPasswordChange = (e) => setPassword(e.target.value)
+    const onConfirmPasswordChange = (e) => setConfirmPassword(e.target.value)
+
+    const canCreate = [firstname,lastname,username,phone,password,confirmPassword].every(Boolean) && registerRequestStatus === 'idle'
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const onFormSubmit = (e) => {
+      e.preventDefault()
+
+      if(canCreate){
+        setRegisterRequestStatus('pending')
+
+        try {
+          dispatch(
+            register({
+              user:{
+                firstname,
+              lastname,
+              username,
+              phone,
+              password,
+              confirmPassword
+              }
+              
+             
+            })
+          ).unwrap()
+            setFirstname('')
+            setLastname('')
+            setUsername('')
+            setPhone('')
+            setPassword('')
+            setConfirmPassword('')
+
+           
+
+        } catch (error) {
+          console.log(error)
+        }finally{
+          setRegisterRequestStatus('idle')
+        }
+        navigate("/login")
+      }
+    }
+
+   
    
 
   return (
-    <div className="cont_forms cont_forms_active_sign_up">
-    <div className="cont_img_back_">
-      <img
-        src="https://c4.wallpaperflare.com/wallpaper/879/372/14/palm-beach-corner-wallpaper-thumb.jpg"
-        alt=""
-      />
+    <div className='row mt-4'>
+      <div className='col-md-4'></div>
+      <div className='col-md-4'>
+      <div className={card}>
+    <form class={classes.form}>
+    <p class={classes.title}>Register </p>
+    <p class={classes.message}>Signup now and get full access to our app. </p>
+        <div class={classes.flex}>
+        <label>
+            <input required id ="firstname"  type="text" class={classes.input}  onChange={onFirstnameChange} value={firstname}/>
+            <span>Firstname</span>
+        </label>
+
+        <label>
+            <input  required id ="lastname"  type="text" class={classes.input} onChange={onLastnameChange} value={lastname}/>
+            <span>Lastname</span>
+        </label>
+    </div>  
+            
+    <label>
+        <input required id ="username"  type="email" class={classes.input} onChange={onUsernameChange} value={username}/>
+        <span>Email</span>
+    </label> 
+
+    <label>
+        <input required id ="phone"  type="text" class={classes.input} onChange={onPhoneChange} value={phone}/>
+        <span>Phone</span>
+    </label> 
+        
+    <label>
+        <input required id ="password"  type="password" class={classes.input} onChange={onPasswordChange} value={password}/>
+        <span>Password</span>
+    </label>
+    <label>
+        <input required id ="confirmPassword"  type="password" class={classes.input} onChange={onConfirmPasswordChange} value={confirmPassword}/>
+        <span>Confirm password</span>
+    </label>
+    <button class={classes.submit} disabled={!canCreate} onClick={onFormSubmit}>Submit</button>
+    <p class="signin">Already have an acount ? <Link to="/login">Signin</Link> </p>
+</form>
+</div>
+      </div>
+      <div className='col-md-4'></div>
     </div>
-    <div className="cont_form_sign_up" style={{display:"block"}}>
-   
-    <i class='far fa-arrow-alt-circle-left text-light' onClick={props.onArrow}></i>
-    <form className='sign_up'>
-    <h2 className='text-light'>SIGN UP</h2>
-    
-    <input type="text" placeholder="First Name" className='form-control mb-2' />
-    <input type="text" placeholder="Last Name" className='form-control mb-2' />
-    <input type="email" placeholder="Email" className='form-control mb-2' />
-    <input type="text" placeholder="Phone" className='form-control mb-2' />
-    <input type="password" placeholder="Password" className='form-control mb-2' />
-    <input type="password" placeholder="Confirm Password" className='form-control mb-2' />
-    <button className="btn_sign_up" onclick="changeToSignUp">
-      SIGN UP
-    </button>
-    </form>
-  </div>
-  </div>
+ 
   )
 }
 

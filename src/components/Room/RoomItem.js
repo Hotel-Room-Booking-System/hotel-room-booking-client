@@ -41,7 +41,7 @@ const RoomItem = (props) => {
     <td><img src={props.image3} className="image fluid" width="100px" height="100px"/></td>
     <td>{props.description}</td>
     <td>
-      <Link to={`/roomTable/updateroom/${props.id}`}>
+      <Link to={`/admin/roomTable/updateroom/${props.id}`}>
         
         <i class="far fa-edit fa-1x text-success mx-4"></i>
       </Link>

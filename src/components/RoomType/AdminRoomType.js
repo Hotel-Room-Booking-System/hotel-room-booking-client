@@ -37,7 +37,7 @@ const AdminRoomType = (props) => {
       <td>{props.price}</td>
       <td>{parse(props.facilities)}</td>
       <td className="px-3">
-        <Link to={`/roomtypeTable/updateroomType/${props.id}`}>
+        <Link to={`/admin/roomtypeTable/updateroomType/${props.id}`}>
           
           <i class="far fa-edit fa-1x text-success mx-4"></i>
         </Link>

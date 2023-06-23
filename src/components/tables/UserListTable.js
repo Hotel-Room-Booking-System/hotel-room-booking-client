@@ -1,56 +1,48 @@
-import React, { useEffect } from 'react'
-
-//jQuery libraries
 import "datatables.net-dt/js/dataTables.dataTables"
 import "datatables.net-dt/css/jquery.dataTables.min.css"
 import $ from 'jquery'; 
-
 import { useDispatch } from 'react-redux';
-import Bookinglist from './BookingList';
-import {  fetchBooking } from './bookingSlice';
+import { useEffect } from "react";
+import { fetchAllUsers } from "../User/userSlice";
+import UserList from "../User/UserList";
 
-
-const BookingShow = () => {
-  
-  const dispatch = useDispatch()
+const UserListTable = () => {
+    const dispatch = useDispatch()
   useEffect(() => {
      
-          dispatch(fetchBooking())
+          dispatch(fetchAllUsers())
       
   },[dispatch]
   )
 
+  //initialize datatable
   $(document).ready(function () {
     setTimeout(function(){
     $('#example').DataTable();
      } ,1000);
 });
-  
+
   return (
     <div className="MainDiv">
     <div class=" text-center">
-        <h3>Booking List</h3>
+        <h3>User Information</h3>
     </div>
      
     <div className="container">
          
-    <table id="example" class="table table-hover table-bordered">
-
+        <table id="example" class="table table-hover table-bordered">
         <thead>
           <tr>
             <th>No</th>
-            <th>Guest Name</th>
-            <th>Nrc</th>
-            <th>Phone</th>
-            <th>Details</th>
-            {/* <th>TotalAdults</th>
-            <th>TotalChildren</th>
-            <th>Special Request</th>
-            <th>CreatedAt</th> */}
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone </th>
+            <th>Registration Date</th>
+            <th>Updated Date</th>
           </tr>
         </thead>
         <tbody>
-        <Bookinglist/>
+        <UserList/>
            
         </tbody>
       </table>
@@ -60,4 +52,4 @@ const BookingShow = () => {
   )
 }
 
-export default BookingShow
+export default UserListTable

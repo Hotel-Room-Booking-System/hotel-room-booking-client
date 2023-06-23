@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import BookingRoomList from '../BookingRoom/BookingRoomList'
+
 
 const BookingRoomTable = () => {
 
@@ -30,7 +30,7 @@ const BookingRoomTable = () => {
           </tr>
         </thead>
         <tbody>
-        <BookingRoomList/>
+     
            
         </tbody>
       </table>

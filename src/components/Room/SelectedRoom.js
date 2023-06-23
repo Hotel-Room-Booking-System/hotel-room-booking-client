@@ -1,9 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
-  fetchAllRoom,
   findRoomByselected,
+ 
 } from "./roomSlice";
-import { selectRoomTypeById } from "../RoomType/roomTypeSlice";
 import SelectedRoomItem from "./SelectedRoomItem";
 import { Link } from "react-router-dom";
 
@@ -12,6 +11,8 @@ const SelectedRoom = () => {
 
   const selectedRooms = useSelector(findRoomByselected);
   console.log("SelectedRoom component: " + selectedRooms);
+
+ 
   // const roomTypeId = selectedRooms.roomTypeId;
   // const roomtype = useSelector((state) => selectRoomTypeById(state, Number(roomTypeId)) );
 
@@ -39,13 +40,14 @@ const SelectedRoom = () => {
 
   return (
     <div className="card px-3">
-   
+    <form>
       {content}
       <div className="row text-center">
         <Link to="/form">
         <button className="btn btn-primary mb-2">Proceed To Guest Info</button>
         </Link>
       </div>
+      </form>
     </div>
     
     );

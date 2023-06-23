@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import axios from "axios";
 
-const REGISTER_URL = 'http://localhost:8181/api/payment/create'
+const REGISTER_URL = 'http://localhost:8181/api/payment/create/'
 const SHOW_URL = 'http://localhost:8181/api/payment/all'
 const UPDATE_URL = 'http://localhost:8181/api/payment/update'
 const DELETE_PAYMENT='http://localhost:8181/api/payment/delete/'
@@ -12,11 +12,10 @@ export const fetchAllPayments = createAsyncThunk('payment/fetchAllPayments',asyn
 })
 
 
-export const register = createAsyncThunk('payment/register', async (payment) => {
-    console.log(payment)
-    const response = await axios.post (REGISTER_URL,payment, {
-        'Content-Type' : 'application/json',
-    })
+export const register = createAsyncThunk('payment/register', async (data) => {
+    console.log(data.payment.cvc)
+    console.log(data.bookingId)
+    const response = await axios.post (`${REGISTER_URL}${data.bookingId}`,data.payment)
     return response.data
 })  
 
@@ -34,6 +33,7 @@ export const deletePayment= createAsyncThunk('payment/deletePayment',async(data)
 
 const initialState = {
     payments:[],
+    totalPayment: {},
     status: 'idle',
     error:null
 }
@@ -41,7 +41,14 @@ const initialState = {
 export const paymentSlice = createSlice({
     name : 'paymentSlice',
     initialState,
-    reducers : {},
+    reducers : {
+        setTotalPayment:(state,action) => {
+            state.totalPayment = action.payload
+            console.log("Total Payment:"+state.totalPayment)
+        },
+
+        
+    },
     extraReducers(builder){
         builder
         .addCase(fetchAllPayments.pending, (state,action) =>{
@@ -79,8 +86,11 @@ export const paymentSlice = createSlice({
 export const getAllPayments = (state) => state.payments.payments
 export const getPaymentStatus = (state) => state.payments.status
 export const getPaymentError = (state) => state.payments.error
+export const getTotalPayment = (state) => state.payments.totalPayment
 export const selectPaymentById = (state, paymentId) => state.payments.payments.find(payment => payment.id === paymentId)
 
 export const getPayment = (state) => state.payments.payment
+
+export const {setTotalPayment} = paymentSlice.actions
  
 export default paymentSlice.reducer

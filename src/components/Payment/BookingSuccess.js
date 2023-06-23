@@ -12,7 +12,7 @@ const BookingSuccess = () => {
     <div className="text-center mt-3">You Successfully Created Your Booking</div>
     <div className="text-center mt-3 text-muted">
         <label>To See Your Booking</label>
-        <Link to="/payment-table" className="text-success">clickhere</Link>       
+        <Link to="/find-your" className="text-success">clickhere</Link>       
     </div>
     
     <Link className="btn btn mt-5" to="/"><i class='fas fa-home '></i>GO TO Home

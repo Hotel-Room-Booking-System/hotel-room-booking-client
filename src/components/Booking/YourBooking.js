@@ -1,15 +1,42 @@
 import classes from "./YourBooking.module.css";
 import SmallImg from "../pages/SmallImg";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBooking, getAllBookings } from "./bookingSlice";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { fetchBooking, fetchUserBooking, getAllBookings, selectBookingByUserId, selectBookingByUsername } from "./bookingSlice";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getEmail, getUser } from "../../features/auth/authSlice";
+import { findRoomByselected } from "../Room/roomSlice"
+import { selectBookingRoomByBkId } from "../BookingRoom/bookingRoomSlice";
+import YourBookingRoom from "./YourBookingRoom";
+
+
+
 const YourBooking = () => {
+
+ // const { userId } = useParams()
   const dispatch = useDispatch()
   const card = `col-md-3 ml-5 mt-4 ${classes.card}`;
 
-  const bookings = useSelector(getAllBookings)
-  console.log("bookings"+bookings)
+  const user = useSelector(getUser)
+
+  const loginUserId = user.id
+  console.log("UsersID :"+ loginUserId)
+
+  const bookings = useSelector((state) => selectBookingByUsername(state,String(user.username)))
+
+  
+  
+ 
+
+  // const bookings = useSelector((state) => selectBookingByUserId(state,Number(loginUserId)))
+  
+  console.log("bookings in your booking"+bookings)
+
+  //  const selectedRooms = useSelector(findRoomByselected);
+  // const count = Object.keys(selectedRooms).length
+
+  // console.log("No of room:"+count)
+
   useEffect(()=>{
     dispatch (fetchBooking())
   
@@ -19,97 +46,28 @@ const YourBooking = () => {
 
 
   return (
-    <div className="container">
-    <div className="row">
-      {
-        bookings.map(booking =>(
-<div class={card}>
-          <div class={classes.cardfront}>
-            <div>
-              <SmallImg />{" "}
-            </div>
-          
-            <div className="row mt-5">
-              <div className="col-md-5">
-                <label>Name </label>
-              </div>
-              <div className="col-md-7">
-                <label>{booking.guestName}</label>
-              </div>
-            </div>
-            <div className="row mt-2 ">
-              <div className="col-md-5">
-                <label>Phone Number </label>
-              </div>
-              <div className="col-md-7">
-                <label>{booking.phone}</label>
-              </div>
-            </div>
-            <div className="row mt-2">
-              <div className="col-md-5">
-                <label>Email </label>
-              </div>
-              <div className="col-md-7">
-                <label>aph7720@gmail.com</label>
-              </div>
-            </div>
-          </div>
-          
-          <div class={classes.cardback}>
-          <Link className={classes.btn} to={`/find-your/updateBooking/${booking.id}`} >
-          <i class='far fa-edit'></i>
-        </Link>
-            <div className="row mt-2">
-              <div className="col-md-5">
-                <label> Check-in </label>
-              </div>
-              <div className="col-md-7">
-                <label>May 24,2023</label>
-              </div>
-            </div>
-            <div className="row mt-2">
-              <div className="col-md-5">
-                <label>Check-Out </label>
-              </div>
-              <div className="col-md-7">
-                <label>May 26,2023</label>
-              </div>
-            </div>
-            <div className="row mt-2">
-              <div className="col-md-5">
-                <label>Rooms </label>
-              </div>
-              <div className="col-md-7">
-                <label>1 Rooms</label>
-              </div>
-            </div>
-            <div className="row mt-2">
-              <div className="col-md-5">
-                <label>Number Of Guest </label>
-              </div>
-              <div className="col-md-7">
-                <label>{booking.totalAdults + booking.totalChildren} persons </label>              
-              </div>
-            </div>
-            <div className="row mt-2">
-              <div className="col-md-5">
-                <label>SpecialRequest </label>
-              </div>
-              <div className="col-md-7">
-                <label>{booking.specialRequest} </label>              
-              </div>
-            </div>
-            <div className="text-muted mt-1 ms-5">Thanks For Booking With Us!</div>
-          </div>
-         
-        </div>
-        )
-        )
-      }
-     
+    <section style={{backgroundcolor: "#eee" }}> 
 
-      </div>
-      </div>
+  <div class="container py-5"> 
+    <div class="row justify-content-center"> 
+    {  bookings.map(booking =>( 
+        <YourBookingRoom
+          key={booking.id}
+          id={booking.id}
+          guestName = {booking.guestName}
+          phone = {booking.phone}
+          checkIn = {booking.checkIn}
+          checkOut = {booking.checkOut}
+          totalAdults = {booking.totalAdults}
+          totalChildren = {booking.totalChildren}
+          numOfRoom = {booking.numOfRoom}
+          specialRequest = {booking.specialRequest}
+          bookingRoom = {booking.bookingRooms}
+         />
+     ))} 
+    </div> 
+  </div>
+</section>
  
   );
 };

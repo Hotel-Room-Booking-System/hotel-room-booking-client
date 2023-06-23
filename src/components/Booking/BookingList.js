@@ -20,6 +20,7 @@ const Bookinglist = (props) => {
   }, [dispatch]);
 
   let content;
+  let index=1;
    
 
   if (bookingStatus === "loading") {
@@ -29,6 +30,7 @@ const Bookinglist = (props) => {
   if (bookingStatus === "succeeded") {
     content = bookingList.map((booking) => (
       <AdminBooking
+        no ={index++}
         id={booking.id}
         guestName={booking.guestName}
         nrc={booking.nrc}

@@ -136,7 +136,7 @@ const ARoom = (props) => {
             </div> */}
             {/* <hr></hr> */}
             
-            <div className="accordion accordion-flush" id="accordionFlushExample">
+            <div className="accordion accordion-flush" id="accordionFlushExample{props.id}">
           <div className="accordion-item">
             <h2 className="accordion-header">
               <button
@@ -153,7 +153,7 @@ const ARoom = (props) => {
             <div
               id="flush-collapseOne"
               className="accordion-collapse collapse"
-              data-bs-parent="#accordionFlushExample"
+              data-bs-parent="#accordionFlushExample{props.id}"
             >
               <div className="accordion-body">
               <h6>Descriptions</h6>

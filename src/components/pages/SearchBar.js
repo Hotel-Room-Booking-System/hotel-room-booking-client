@@ -26,13 +26,14 @@ const SearchBar = () => {
 
   // const filteredRooms = useSelector((state) => search(state,{checkIn,checkOut,name:roomTypeName}) )
   const allRooms = useSelector(getAllRoom)
+  console.log("All rooms: "+allRooms)
   const dispatch = useDispatch()
 
   const onSubmit = (e) =>{
     e.preventDefault()
     const filteredRooms = allRooms.filter(room =>  {
 
-      const isRoomAvailable = room.roomType.name === roomTypeName && room.bookingRoom.every(bkroom => {
+      const isRoomAvailable = room.roomType.name === roomTypeName && room.bookingRooms.every(bkroom => {
 
         return (
           new Date(checkIn) >= new Date(bkroom.checkOut)

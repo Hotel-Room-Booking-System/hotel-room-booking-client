@@ -66,7 +66,7 @@ const AddRoom = () => {
       setImage1('')
       setImage2('')
       setImage3('')
-      navigate(`/roomTable`)
+      navigate(`/admin/roomTable`)
     }
 
 

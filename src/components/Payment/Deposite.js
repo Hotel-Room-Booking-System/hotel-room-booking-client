@@ -3,11 +3,12 @@ import kbzimg from "../images/kbz.png";
 import BookingSuccess from "./BookingSuccess";
 import { useState } from "react";
 import BackDrop from "../pages/BackDrop";
-import { useDispatch } from "react-redux";
-import { register } from "./paymentSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getTotalPayment, register } from "./paymentSlice";
+import { getAllBookings, oneBooking } from "../Booking/bookingSlice";
 
 const Deposite = () => {
- const total = 50000;
+ 
   const [holderName, setHoldername] = useState();
   const [cardNo, setCardnumber] = useState();
   const [cvc, setCvc] = useState();
@@ -19,11 +20,30 @@ const Deposite = () => {
   const onCVCChange = (e) => setCvc(e.target.value);
   const onCardTypeChange = (e) => setCardtype(e.target.value);
 
+  const totalPayment = useSelector(getTotalPayment)
+  console.log("Total Payment in deposite: "+ totalPayment)
+
+  const total = totalPayment.total
+
+  //for booking
+  const booking = useSelector(getAllBookings)
+  let finalbook;
+
+  if(booking.length === 0){
+    finalbook = booking
+  }else{
+    finalbook = booking[booking.length -1]
+  }
+ const bookingId = Number(finalbook.id)
+   console.log("Final book"+bookingId)
+
   const canCreate =
     [total,holderName, cardNo, cvc, cardType].every(Boolean) &&
     registerRequestStatus === "idle";
 
   const dispatch = useDispatch();
+
+ 
 
   const cardbody1 = `${classes.card}`;
   const cardbody2 = ` text-center ${classes.smallcard}`;
@@ -39,11 +59,14 @@ const Deposite = () => {
       try {
         dispatch(
           register({
+            payment:{
             total,
             holderName,
             cardNo,
             cvc,
             cardType,
+            },bookingId
+            
           })
         ).unwrap();
         setHoldername("");
@@ -153,13 +176,12 @@ const Deposite = () => {
                         <small class="ml-auto text-muted">(required)</small>
                       </div>
                     </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="cardType"
-                      onChange={onCardTypeChange}
-                      value={cardType}
-                    />
+                    <select required className="form-select" value={cardType} onChange={onCardTypeChange}>
+                  <option value="Master Card">Master Card</option>
+                  <option value="Credit Card">Credit Card</option>
+                  <option value="MPU Card">MPU Card</option>
+                  <option value="Visa Cars">Visa Card</option>
+                </select>
                   </div>
                   <button
                     type="submit"
